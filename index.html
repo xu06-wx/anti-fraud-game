@@ -10,12 +10,18 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: #d1d5db; 
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
+            height: 100vh; overflow: hidden; /* 強制隱藏網頁本身的滾動條 */
         }
 
+        /* 完美適應螢幕的手機外框 */
         .phone-mockup {
-            width: 100%; max-width: 375px; height: 85vh; max-height: 812px; min-height: 600px;
-            background-color: #ffffff; border: 14px solid #1f2937; border-radius: 40px;
+            width: 90vw; 
+            max-width: 380px; 
+            height: 90vh; /* 嚴格限制在螢幕 90% 內 */
+            max-height: 820px; 
+            background-color: #ffffff; 
+            border: 12px solid #1f2937; 
+            border-radius: 40px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             position: relative; display: flex; flex-direction: column; overflow: hidden;
         }
@@ -37,7 +43,7 @@
         }
 
         .scene {
-            display: none; flex: 1; overflow-y: auto; flex-direction: column; padding-bottom: 30px;
+            display: none; flex: 1; overflow-y: auto; flex-direction: column; padding-bottom: 20px;
             animation: slideUp 0.3s ease-out;
         }
         .scene.active { display: flex; }
@@ -76,15 +82,14 @@
         .btn-outline { background-color: transparent; color: #262626; border: 1px solid #dbdbdb; }
         .btn-danger { background-color: #ed4956; }
 
-        /* 檢舉選單樣式 */
+        /* 檢舉選單樣式 (取消原本的紅色醒目提示) */
         .report-menu { display: flex; flex-direction: column; width: 100%; background: #fff; height: 100%; }
         .report-header { padding: 16px; text-align: center; border-bottom: 1px solid #efefef; font-weight: bold; font-size: 16px; }
         .report-btn {
             background: none; border: none; border-bottom: 1px solid #efefef; padding: 18px 16px;
-            text-align: left; font-size: 15px; cursor: pointer; color: #262626; display: flex; justify-content: space-between;
+            text-align: left; font-size: 14px; cursor: pointer; color: #262626; display: flex; justify-content: space-between; align-items: center; line-height: 1.4;
         }
         .report-btn:hover { background-color: #fafafa; }
-        .report-btn-red { color: #ed4956; font-weight: bold; }
 
         .law-card { background-color: #ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #10b981; padding: 16px; margin: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #047857; }
         .scene::-webkit-scrollbar { display: none; }
@@ -178,9 +183,10 @@
     <div id="report-menu-1" class="scene">
         <div class="report-menu">
             <div class="report-header">檢舉此貼文<br><span style="font-size: 12px; color:#8e8e8e; font-weight:normal;">你為什麼要檢舉這則貼文？</span></div>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">包含血腥或暴力內容 <span>›</span></button>
-            <button class="report-btn report-btn-red" onclick="goToScene('scene-win-report-1')">真人實證揭露不全且給予不實特定期間承諾 <span>›</span></button>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">侵害智慧財產權 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">宣稱具有醫療效能之不實廣告 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-win-report-1')">真人實證揭露不全且給予不實特定期間承諾 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">未標示營養成分及有效期限 <span>›</span></button>
+            
             <button class="report-btn" style="text-align: center; justify-content: center; color: #0095f6; border-top: 8px solid #efefef;" onclick="goToScene('scene-ad-1')">取消</button>
         </div>
     </div>
@@ -188,9 +194,10 @@
     <div id="report-menu-2" class="scene">
         <div class="report-menu">
             <div class="report-header">檢舉此貼文<br><span style="font-size: 12px; color:#8e8e8e; font-weight:normal;">你為什麼要檢舉這則貼文？</span></div>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">這可能是詐騙帳號 <span>›</span></button>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">仇恨言論或騷擾 <span>›</span></button>
-            <button class="report-btn report-btn-red" onclick="goToScene('scene-win-report-2')">缺乏科學依據且宣稱不運動即有誇大瘦身效果 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">廣告代言人未確實使用該項產品 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">使用引人錯誤之從眾效應話術 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-win-report-2')">缺乏科學依據且宣稱不運動即有誇大瘦身效果 <span>›</span></button>
+            
             <button class="report-btn" style="text-align: center; justify-content: center; color: #0095f6; border-top: 8px solid #efefef;" onclick="goToScene('scene-ad-2')">取消</button>
         </div>
     </div>
@@ -198,9 +205,10 @@
     <div id="report-menu-3" class="scene">
         <div class="report-menu">
             <div class="report-header">檢舉此貼文<br><span style="font-size: 12px; color:#8e8e8e; font-weight:normal;">你為什麼要檢舉這則貼文？</span></div>
-            <button class="report-btn report-btn-red" onclick="goToScene('scene-win-report-3')">未清楚說明利息，隱瞞假分期真貸款之陷阱 <span>›</span></button>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">散布垃圾訊息 <span>›</span></button>
-            <button class="report-btn" onclick="goToScene('scene-report-fail')">販售違禁品 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-win-report-3')">未清楚說明利息，隱瞞假分期真貸款之陷阱 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">未提供七日無條件退貨之鑑賞期 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-report-fail')">限制未成年人簽約之法定代理人同意權 <span>›</span></button>
+            
             <button class="report-btn" style="text-align: center; justify-content: center; color: #0095f6; border-top: 8px solid #efefef;" onclick="goToScene('scene-ad-3')">取消</button>
         </div>
     </div>
@@ -214,7 +222,7 @@
             </p>
         </div>
         <div class="game-controls" style="background: transparent; border: none;">
-            <button class="btn" onclick="goToScene('scene-ad-2')">可惡！繼續滑貼文</button>
+            <button class="btn" onclick="goToScene('scene-ad-2')">可惡！只好繼續滑貼文</button>
         </div>
     </div>
 
@@ -226,7 +234,7 @@
         </div>
         <div class="law-card">
             <strong>📖 報告知識點：</strong><br>
-            依規定使用真人實證，必須同時交代具體產品、正常花費時間、成功與失敗機率等，此圖嚴重揭露不全 [cite: 94]。此外，一般消費者普遍無法在該特定期間內達到預期效果，屬違法不實 [cite: 99, 100]。
+            依規定使用真人實證，必須同時交代具體產品、正常花費時間、成功與失敗機率等，此圖嚴重揭露不全。此外，一般消費者普遍無法在該特定期間內達到預期效果，屬違法不實。
         </div>
         <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
     </div>
@@ -239,7 +247,7 @@
         </div>
         <div class="law-card">
             <strong>📖 報告知識點：</strong><br>
-            「不用運動也能瘦」、「快速燃脂」等字眼缺乏科學依據，容易誤導消費者 [cite: 129, 130, 132]。公平交易委員會曾針對此類不實廣告開罰 [cite: 123]。
+            「不用運動也能瘦」、「快速燃脂」等字眼缺乏科學依據，容易誤導消費者。公平交易委員會曾針對此類不實廣告開罰。
         </div>
         <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
     </div>
@@ -252,7 +260,7 @@
         </div>
         <div class="law-card">
             <strong>📖 報告知識點：</strong><br>
-            部分美容業者會主打「學生也能分期」 [cite: 145]，但未清楚說明利息與總金額 [cite: 146]，實際上是讓消費者簽署高額貸款契約 [cite: 141]。業者依法負有消費借貸契約之告知義務 [cite: 153, 154]。
+            部分美容業者會主打「學生也能分期」，但未清楚說明利息與總金額，實際上是讓消費者簽署高額貸款契約。業者依法負有消費借貸契約之告知義務。
         </div>
         <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
     </div>
@@ -296,6 +304,8 @@
     function goToScene(sceneId) {
         document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
         document.getElementById(sceneId).classList.add('active');
+        // 切換場景時自動捲動到最上方
+        document.getElementById(sceneId).scrollTop = 0;
     }
 </script>
 
