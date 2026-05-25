@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #d1d5db; /* 背景改為低調的灰，凸顯手機 */
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +22,7 @@
         .phone-mockup {
             width: 100%;
             max-width: 375px;
-            height: 85vh; /* 自適應螢幕高度，不超出視窗 */
+            height: 85vh; 
             max-height: 812px;
             min-height: 600px;
             background-color: #ffffff;
@@ -173,7 +173,7 @@
         }
 
         .btn {
-            background-color: #0095f6; /* IG 藍色 */
+            background-color: #0095f6;
             color: white;
             border: none;
             border-radius: 8px;
@@ -208,19 +208,6 @@
             font-size: 13px;
             line-height: 1.6;
             color: #b71c1c;
-        }
-
-        /* 演算法洗版特效 */
-        .spam-bg {
-            background-color: #ed4956;
-            color: white;
-            animation: pulse 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { background-color: #ed4956; }
-            50% { background-color: #c93543; }
-            100% { background-color: #ed4956; }
         }
 
         /* 自訂滾動條 */
@@ -300,26 +287,57 @@
             </div>
             <div class="post-actions">♡ 💬 ⌲</div>
             <div class="post-caption">
-                <strong>beauty_clinic_tw</strong> 還在猶豫嗎？錯過這次免費深層保養，又要再等一年囉！保證不推銷！
+                <strong>beauty_clinic_tw</strong> 還在猶豫嗎？錯過這次免費深層保養，又要再等一年囉！保證不強迫推銷！
             </div>
         </div>
         <div class="game-controls">
             <button class="btn" onclick="goToScene('scene-store')">好啦，填寫資料預約</button>
             <button class="btn btn-outline" onclick="goToScene('scene-store')">私訊小編再確認一次</button>
-            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-spam')">堅決往左滑！</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-3')">繼續往左滑...</button>
         </div>
     </div>
 
-    <div id="scene-spam" class="scene spam-bg">
-        <div style="padding: 40px 24px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 60px; margin-bottom: 20px;">🎯</div>
-            <h2 style="margin: 0 0 16px 0;">演算法已鎖定你</h2>
-            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-                你滑開了下一則...是免費保養廣告。<br><br>再滑一則...還是免費保養廣告！<br><br>你連續滑了 10 則貼文，每一則都是這個廣告！社群軟體的演算法已經判定你極度需要這個酷東西。
-            </p>
+    <div id="scene-ad-3" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #ff7675;">懶</div>
+                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
+            </div>
+            <div class="post-image" style="background: #ffe0e0;">
+                <span style="font-size: 40px;">🛋️</span>
+                <span style="color:#d63031;">不運動也能減肥？</span>
+            </div>
+            <div class="post-actions">♡ 💬 ⌲</div>
+            <div class="post-caption">
+                <strong>lazy_diet_machine</strong> 躺平變美的秘密！每天 5 分鐘，快樂減肥不再是夢！馬上點擊預約門市免費體驗。
+            </div>
         </div>
-        <div class="game-controls" style="background: transparent; border: none;">
-            <button class="btn" style="background: white; color: #ed4956;" onclick="goToScene('scene-store')">我投降！去店裡看看總行了吧</button>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">真假？預約去現場看看</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-store')">私訊小編詢問原理</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-4')">我不信，繼續往左滑...</button>
+        </div>
+    </div>
+
+    <div id="scene-ad-4" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #0984e3;">學</div>
+                <div class="username">student_beauty_only <span class="sponsored">贊助</span></div>
+            </div>
+            <div class="post-image" style="background: #dfe6e9;">
+                <span style="font-size: 40px;">🎓</span>
+                <span style="color:#0984e3;">學生專屬 0卡分期</span>
+            </div>
+            <div class="post-actions">♡ 💬 ⌲</div>
+            <div class="post-caption">
+                <strong>student_beauty_only</strong> 學生黨看過來！憑學生證即可享有隱藏版「0元無卡分期」美容專案，先享受後付款，完全無負擔！
+            </div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">分期好像很划算，去了解看看</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-store')">私訊小編問總金額</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-2')">滑到煩了，繼續往左滑...</button>
         </div>
     </div>
 
@@ -327,7 +345,7 @@
         <div style="padding: 24px 16px;">
             <h2 style="font-size: 20px; color: #262626;">🏢 實體美容中心</h2>
             <p style="font-size: 15px; line-height: 1.6; color: #262626;">
-                你來到了美容中心。美容師幫你做了一半的保養後，把你帶進一間小房間，聯合同事輪番上陣，推銷高達 10 萬元的療程。
+                你受不了廣告洗版，來到了實體店面。美容師幫你做了一半的保養後，把你帶進一間小房間，聯合同事輪番上陣，推銷高達 10 萬元的療程。
             </p>
             <p style="font-size: 15px; line-height: 1.6; color: #262626; background: #f8f9fa; padding: 12px; border-radius: 8px; border-left: 4px solid #fbbc04;">
                 在你猶豫時，店員突然當場「啪」一聲，拆封了一罐高價精華液抹在你臉上：「先讓你試用看看，效果很好喔！」
@@ -344,7 +362,7 @@
             <h2 style="font-size: 20px; color: #262626;">📝 體貼的「學生專案」？</h2>
             <p style="font-size: 15px; line-height: 1.6; color: #262626;">
                 店員一聽你是學生，立刻換上笑臉，拿出一份合約：<br><br>
-                「體諒你是學生，幫你申請『學生專案』，每個月只要少喝幾杯手搖飲，月付一點點就能輕鬆變美喔！」
+                「體諒你是學生，幫你申請『學生專案』，每個月只要少喝幾杯飲料，月付一點點就能輕鬆變美喔！」
             </p>
             <p style="font-size: 15px; font-weight: bold; color: #ed4956; text-align: center; margin-top: 20px;">
                 她緊緊盯著你，把筆塞進你手裡催促簽名。
@@ -405,7 +423,6 @@
 </div>
 
 <script>
-    // 即時更新手機狀態列時間
     function updateClock() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
@@ -415,7 +432,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 場景切換邏輯
     function goToScene(sceneId) {
         document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
         document.getElementById(sceneId).classList.add('active');
