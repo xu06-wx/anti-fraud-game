@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指尖上的陷阱：社群生存大挑戰</title>
+    <style>
+        /* Material Design 3 視覺風格設定 */
+        :root {
+            --m3-sys-light-primary: #6750A4;
+            --m3-sys-light-on-primary: #FFFFFF;
+            --m3-sys-light-primary-container: #EADDFF;
+            --m3-sys-light-on-primary-container: #21005D;
+            --m3-sys-light-surface: #FFFBFE;
+            --m3-sys-light-surface-variant: #E7E0EC;
+            --m3-sys-light-on-surface: #1C1B1F;
+            --m3-sys-light-error: #B3261E;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 模擬手機螢幕 */
+        .phone-container {
+            width: 390px;
+            height: 844px;
+            background-color: var(--m3-sys-light-surface);
+            border-radius: 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scene {
+            display: none;
+            padding: 24px;
+            height: 100%;
+            box-sizing: border-box;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .scene.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 劇情卡片與圖片 */
+        .story-card {
+            background-color: var(--m3-sys-light-surface-variant);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            color: var(--m3-sys-light-on-surface);
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .story-card h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: var(--m3-sys-light-primary);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ccc;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(45deg, #f3e5f5, #e1bee7);
+        }
+
+        /* 滿版限動干擾特效 */
+        .spam-effect {
+            background: repeating-linear-gradient(
+                45deg,
+                var(--m3-sys-light-error),
+                var(--m3-sys-light-error) 10px,
+                #fff 10px,
+                #fff 20px
+            ) !important;
+            color: white !important;
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* 按鈕設計 */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 24px;
+        }
+
+        .m3-btn {
+            background-color: var(--m3-sys-light-primary-container);
+            color: var(--m3-sys-light-on-primary-container);
+            border: none;
+            border-radius: 100px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .m3-btn:hover {
+            background-color: var(--m3-sys-light-primary);
+            color: var(--m3-sys-light-on-primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .m3-btn-secondary {
+            background-color: transparent;
+            border: 1px solid #79747E;
+            color: var(--m3-sys-light-primary);
+        }
+
+        .law-tip {
+            background-color: #F8D8D8;
+            border-left: 4px solid var(--m3-sys-light-error);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    
+    <div id="scene-start" class="scene active">
+        <div class="story-card">
+            <h2>《指尖上的陷阱》</h2>
+            <p>這個月打工的排班特別滿，辛苦了一整個月，今天終於發薪水啦！</p>
+            <p>你癱在宿舍床上，決定好好滑個限時動態放鬆一下，順便思考要怎麼犒賞自己...</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-ad-1')">開始滑手機</button>
+        </div>
+    </div>
+
+    <div id="scene-ad-1" class="scene">
+        <div class="story-card">
+            <div class="image-placeholder">【限時動態】<br>FromXLtoS瘦瘦丸<br>一個半月瘦8kg！</div>
+            <p><strong>贊助廣告</strong></p>
+            <p>「天啊！這家做臉和精雕排脂太神了，無痛感無恢復期！現在填表單直接送價值 3000 元的深層保養（名額剩 2 位）！」</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-store')">A. 反正是免費的，立刻填寫資料預約</button>
+            <button class="m3-btn" onclick="goToScene('scene-store')">B. 先私訊小編，確認「完全不收費」才預約</button>
+            <button class="m3-btn m3-btn-secondary" onclick="goToScene('scene-friend')">C. 往左滑！對廣告沒興趣</button>
+        </div>
+    </div>
+
+    <div id="scene-friend" class="scene">
+        <div class="story-card">
+            <div class="image-placeholder" style="background: linear-gradient(45deg, #e3f2fd, #bbdefb);">朋友阿明：<br>期中考終於結束啦！吃火鍋！</div>
+            <p>你滑到了同學發的限時動態，看起來火鍋很好吃。</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-ad-2')">繼續滑下一則</button>
+        </div>
+    </div>
+
+    <div id="scene-ad-2" class="scene">
+        <div class="story-card">
+            <div class="image-placeholder">【限時動態】<br>你逃不掉的免費保養！</div>
+            <p><strong>贊助廣告</strong></p>
+            <p>又出現了！「還在猶豫嗎？錯過這次免費深層保養，又要再等一年囉！」</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-store')">A. 腦波弱了，填寫資料預約</button>
+            <button class="m3-btn" onclick="goToScene('scene-store')">B. 私訊小編再確認一次</button>
+            <button class="m3-btn m3-btn-secondary" onclick="goToScene('scene-spam')">C. 堅決往左滑！我就是不看廣告！</button>
+        </div>
+    </div>
+
+    <div id="scene-spam" class="scene">
+        <div class="story-card spam-effect">
+            <h2>⚠️ 演算法已鎖定你 ⚠️</h2>
+            <p>你滑開了下一則...是免費保養廣告。<br>再滑一則...還是免費保養廣告！<br>你滑了 50 則限動，每一則都是這個廣告！社群軟體的演算法已經判定你極度需要這個酷東西。</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-store')">好啦！我投降，去店裡看看總行了吧！</button>
+        </div>
+    </div>
+
+    <div id="scene-store" class="scene">
+        <div class="story-card">
+            <h2>實體美容中心</h2>
+            <p>你來到了美容中心。美容師幫你做了一半的保養後，把你帶進一間小房間，聯合同事輪番上陣，推銷高達 10 萬元的療程。</p>
+            <p>在你猶豫時，店員突然當場「啪」一聲，拆封了一罐高價精華液抹在你臉上：「先讓你試用看看，效果很好喔！」</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-contract')">A. 覺得很尷尬，示弱表示自己只是學生，想趕快離開</button>
+            <button class="m3-btn m3-btn-secondary" onclick="goToScene('scene-bad-end-1')">B. 強硬拒絕買課程，要求只要支付剛被拆封的精華液就好</button>
+        </div>
+    </div>
+
+    <div id="scene-contract" class="scene">
+        <div class="story-card">
+            <h2>體貼的「學生專案」？</h2>
+            <p>店員一聽你是學生，立刻換上笑臉，拿出一份合約：「體諒你是學生，幫你申請『學生專案』，每個月只要少喝幾杯手搖飲，月付一點點就能輕鬆變美喔！」</p>
+            <p>她緊緊盯著你，把筆塞進你手裡一直催促你簽名。</p>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-bad-end-2')">A. 仔細確認「美容退費條款」解約手續費不超過5%後，放心簽名</button>
+            <button class="m3-btn m3-btn-secondary" onclick="goToScene('scene-good-end')">B. 仔細看合約，發現上面寫著某某「資融公司申請書」，堅持拒絕簽署</button>
+        </div>
+    </div>
+
+    <div id="scene-bad-end-1" class="scene">
+        <div class="story-card">
+            <h2>Bad Ending：待宰的羔羊</h2>
+            <p>你以為只賠一罐精華液就能脫身？店員冷笑一聲，拿出價目表，那罐不知名的精華液標價高達 28,000 元！你因為當場被拆封，陷入了極大的消費爭議與舉證困難。</p>
+            <div class="law-tip">
+                <strong>消保法宣導：</strong><br>這是不肖業者慣用的「拆封計價」陷阱。在未經消費者同意下強迫拆封商品，企圖規避通訊交易或訪問交易的退費規定。遇到此情況，應堅持不付款並保留證據向消保官申訴。
+            </div>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-start')">重新挑戰</button>
+        </div>
+    </div>
+
+    <div id="scene-bad-end-2" class="scene">
+        <div class="story-card">
+            <h2>Bad Ending：假分期真貸款</h2>
+            <p>你以為確認了美容退費條款就安全了？兩個月後你想解約，美容院雖然同意，但你卻開始收到融資公司的催繳存證信函！</p>
+            <div class="law-tip">
+                <strong>消保法宣導：</strong><br>你簽下的其實是向第三方借錢的「消費借貸契約」。依法規，業者仲介消費者簽訂借貸契約時，須善盡告知義務。若發現不對勁，消費者於核准 7 日內，得以書面通知業者及貸款機構解除借貸契約。
+            </div>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-start')">重新挑戰</button>
+        </div>
+    </div>
+
+    <div id="scene-good-end" class="scene">
+        <div class="story-card">
+            <h2>Good Ending：法規防禦大師！</h2>
+            <p>你敏銳地察覺到合約上的「資融公司」字眼，識破了這根本不是分期付款，而是高利息的「信用貸款」。</p>
+            <p>你嚴正拒絕簽署，並拿出手機揚言要錄影蒐證報警。店員見你不好惹，只好摸摸鼻子放你離開。你成功保住了打工辛苦賺來的薪水！</p>
+            <div class="law-tip">
+                <strong>消保法宣導：</strong><br>簽署任何文件前，務必確認對象是誰。許多「買美容送保養」、「月付便宜」的陷阱，實質上都是誘騙消費者向融資公司辦理高額貸款。
+            </div>
+        </div>
+        <div class="options">
+            <button class="m3-btn" onclick="goToScene('scene-start')">再次遊玩</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 切換場景的腳本
+    function goToScene(sceneId) {
+        // 隱藏所有場景
+        document.querySelectorAll('.scene').forEach(el => {
+            el.classList.remove('active');
+        });
+        // 顯示目標場景
+        document.getElementById(sceneId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
