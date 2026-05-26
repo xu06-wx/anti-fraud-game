@@ -251,9 +251,34 @@
         </div>
         <div class="game-controls">
             <button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
-            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-2')">到底有完沒完？繼續往左滑...</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-5')">到底有完沒完？繼續往左滑...</button>
         </div>
     </div>
+
+    <div id="scene-ad-5" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #ff7675;">懶</div>
+                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-5')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
+                <span style="font-size: 40px;">🛋️</span>
+                <span style="color:#d63031;">不運動也能減肥？</span>
+            </div>
+            <div class="post-actions">
+                <span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
+            </div>
+            <div class="post-caption">
+                <strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
+            </div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-3')">受不了了，繼續往左滑...</button>
+        </div>
+    </div>
+
 
     <div id="report-menu-1" class="scene">
         <div class="report-menu">
@@ -295,6 +320,16 @@
         </div>
     </div>
 
+    <div id="report-menu-5" class="scene">
+        <div class="report-menu">
+            <div class="report-header">檢舉此貼文<br><span style="font-size: 12px; color:#8e8e8e; font-weight:normal;">你為什麼要檢舉這則貼文？</span></div>
+            <button class="report-btn" onclick="goToScene('scene-fail-5')">廣告代言人未確實使用該項產品 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-fail-5')">使用引人錯誤之從眾效應話術 <span>›</span></button>
+            <button class="report-btn" onclick="goToScene('scene-win-report-2')">缺乏科學依據且宣稱不運動即有誇大瘦身效果 <span>›</span></button>
+            <button class="report-btn" style="text-align: center; justify-content: center; color: #0095f6; border-top: 8px solid #efefef;" onclick="goToScene('scene-ad-5')">取消</button>
+        </div>
+    </div>
+
 
     <div id="scene-fail-1" class="scene" style="background-color: #fff;">
         <div style="padding: 60px 24px; text-align: center;">
@@ -317,7 +352,7 @@
             <div style="font-size: 50px; margin-bottom: 16px;">❌</div><h2 style="margin: 0 0 16px 0;">未違反社群守則</h2>
             <p style="color: #737373; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">內容並未違反你所選擇的規定項目，我們不會將其移除。</p>
         </div>
-        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-4')">可惡！只好繼續滑貼文</button></div>
+        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-4')">崩潰！演算法又推廣告</button></div>
     </div>
 
     <div id="scene-fail-4" class="scene" style="background-color: #fff;">
@@ -325,7 +360,15 @@
             <div style="font-size: 50px; margin-bottom: 16px;">❌</div><h2 style="margin: 0 0 16px 0;">未違反社群守則</h2>
             <p style="color: #737373; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">內容並未違反你所選擇的規定項目，我們不會將其移除。</p>
         </div>
-        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-2')">崩潰！演算法又推廣告</button></div>
+        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-5')">崩潰！演算法又推廣告</button></div>
+    </div>
+
+    <div id="scene-fail-5" class="scene" style="background-color: #fff;">
+        <div style="padding: 60px 24px; text-align: center;">
+            <div style="font-size: 50px; margin-bottom: 16px;">❌</div><h2 style="margin: 0 0 16px 0;">未違反社群守則</h2>
+            <p style="color: #737373; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">內容並未違反你所選擇的規定項目，我們不會將其移除。</p>
+        </div>
+        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-3')">崩潰！演算法又推廣告</button></div>
     </div>
 
     <div id="scene-win-report-1" class="scene">
