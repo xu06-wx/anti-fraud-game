@@ -63,7 +63,18 @@
         }
         .username { font-size: 14px; font-weight: 600; color: #262626; }
         .sponsored { font-size: 11px; font-weight: 400; color: #8e8e8e; display: block; }
-        .more-options { margin-left: auto; font-size: 20px; font-weight: bold; cursor: pointer; padding: 0 5px; color: #262626; }
+        
+        /* 低調的灰色警告圖示 */
+        .more-options { 
+            margin-left: auto; 
+            font-size: 18px; 
+            cursor: pointer; 
+            padding: 4px 8px; 
+            filter: grayscale(100%); 
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+        .more-options:hover { opacity: 1; }
         
         .post-image {
             width: 100%; aspect-ratio: 4/5; display: flex; justify-content: center; align-items: center;
@@ -81,7 +92,6 @@
         }
         .btn-outline { background-color: transparent; color: #262626; border: 1px solid #dbdbdb; }
         .btn-danger { background-color: #ed4956; }
-        .btn-report { border: 2px solid #ed4956; color: #ed4956; font-weight: bold; background-color: #fff3f4; }
 
         /* 檢舉選單樣式 */
         .report-menu { display: flex; flex-direction: column; width: 100%; background: #fff; height: 100%; }
@@ -119,7 +129,7 @@
             <div class="post-header">
                 <div class="avatar">XL</div>
                 <div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-                <div class="more-options" onclick="goToScene('report-menu-1')">⋮</div>
+                <div class="more-options" onclick="goToScene('report-menu-1')">⚠️</div>
             </div>
             <div class="post-image" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
                 <span style="font-size: 40px; margin-bottom: 10px;">💊</span>
@@ -133,7 +143,6 @@
         </div>
         <div class="game-controls">
             <button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結購買</button>
-            <button class="btn btn-outline btn-report" onclick="goToScene('report-menu-1')">⚠️ 發現不實廣告，我要檢舉</button>
             <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-1')">往左滑 (沒興趣)</button>
         </div>
     </div>
@@ -154,7 +163,29 @@
             </div>
         </div>
         <div class="game-controls">
-            <button class="btn btn-outline" onclick="goToScene('scene-friend-2')">繼續往下看</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-2')">繼續往下看</button>
+        </div>
+    </div>
+
+    <div id="scene-ad-2" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #ff7675;">懶</div>
+                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-2')">⚠️</div>
+            </div>
+            <div class="post-image" style="background: #ffe0e0;">
+                <span style="font-size: 40px;">🛋️</span>
+                <span style="color:#d63031;">不運動也能減肥？</span>
+            </div>
+            <div class="post-actions">♡ 💬 ⌲</div>
+            <div class="post-caption">
+                <strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
+            </div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
+            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-2')">繼續往左滑...</button>
         </div>
     </div>
 
@@ -174,30 +205,7 @@
             </div>
         </div>
         <div class="game-controls">
-            <button class="btn btn-outline" onclick="goToScene('scene-ad-2')">繼續往下看</button>
-        </div>
-    </div>
-
-    <div id="scene-ad-2" class="scene">
-        <div class="post-container">
-            <div class="post-header">
-                <div class="avatar" style="background: #ff7675;">懶</div>
-                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
-                <div class="more-options" onclick="goToScene('report-menu-2')">⋮</div>
-            </div>
-            <div class="post-image" style="background: #ffe0e0;">
-                <span style="font-size: 40px;">🛋️</span>
-                <span style="color:#d63031;">不運動也能減肥？</span>
-            </div>
-            <div class="post-actions">♡ 💬 ⌲</div>
-            <div class="post-caption">
-                <strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
-            </div>
-        </div>
-        <div class="game-controls">
-            <button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
-            <button class="btn btn-outline btn-report" onclick="goToScene('report-menu-2')">⚠️ 發現不實廣告，我要檢舉</button>
-            <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-3')">繼續往左滑...</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-3')">繼續往下看</button>
         </div>
     </div>
 
@@ -206,7 +214,7 @@
             <div class="post-header">
                 <div class="avatar" style="background: #0984e3;">學</div>
                 <div class="username">student_beauty_only <span class="sponsored">贊助</span></div>
-                <div class="more-options" onclick="goToScene('report-menu-3')">⋮</div>
+                <div class="more-options" onclick="goToScene('report-menu-3')">⚠️</div>
             </div>
             <div class="post-image" style="background: #dfe6e9;">
                 <span style="font-size: 40px;">🎓</span>
@@ -219,7 +227,6 @@
         </div>
         <div class="game-controls">
             <button class="btn" onclick="goToScene('scene-store')">分期好像很划算，去了解看看</button>
-            <button class="btn btn-outline btn-report" onclick="goToScene('report-menu-3')">⚠️ 發現不實廣告，我要檢舉</button>
             <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-4')">滑到煩了，繼續往左滑...</button>
         </div>
     </div>
@@ -229,7 +236,7 @@
             <div class="post-header">
                 <div class="avatar">XL</div>
                 <div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-                <div class="more-options" onclick="goToScene('report-menu-4')">⋮</div>
+                <div class="more-options" onclick="goToScene('report-menu-4')">⚠️</div>
             </div>
             <div class="post-image" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
                 <span style="font-size: 40px; margin-bottom: 10px;">💊</span>
@@ -243,7 +250,6 @@
         </div>
         <div class="game-controls">
             <button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結購買</button>
-            <button class="btn btn-outline btn-report" onclick="goToScene('report-menu-4')">⚠️ 發現不實廣告，我要檢舉</button>
             <button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-2')">到底有完沒完？繼續往左滑...</button>
         </div>
     </div>
@@ -302,7 +308,7 @@
             <div style="font-size: 50px; margin-bottom: 16px;">❌</div><h2 style="margin: 0 0 16px 0;">未違反社群守則</h2>
             <p style="color: #737373; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">內容並未違反你所選擇的規定項目，我們不會將其移除。</p>
         </div>
-        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-ad-3')">可惡！只好繼續滑貼文</button></div>
+        <div class="game-controls" style="background: transparent; border: none;"><button class="btn" onclick="goToScene('scene-friend-2')">可惡！只好繼續滑貼文</button></div>
     </div>
 
     <div id="scene-fail-3" class="scene" style="background-color: #fff;">
