@@ -1,611 +1,443 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>指尖上的陷阱：社群生存大挑戰</title>
-<style>
-/* 壓縮後的 CSS RESET and Body */
-body { margin: 0; padding: 0; font-family: -apple-system, sans-serif; background-color: #d1d5db; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-.phone-mockup { width: 90vw; max-width: 380px; height: 90vh; max-height: 820px; background-color: #ffffff; border: 12px solid #1f2937; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; overflow: hidden; }
-.notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 25px; background-color: #1f2937; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 100; }
-.status-bar { display: flex; justify-content: space-between; padding: 12px 24px 8px; font-size: 12px; font-weight: 600; color: #111; z-index: 50; }
-.home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background-color: #111; border-radius: 100px; z-index: 100; }
-.scene { display: none; flex: 1; overflow-y: auto; flex-direction: column; padding-bottom: 20px; animation: slideUp 0.3s ease-out; }
-.scene.active { display: flex; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指尖上的陷阱：社群生存大挑戰</title>
+    <style>
+        /* 基礎設定 */
+        body { margin: 0; padding: 0; font-family: -apple-system, sans-serif; background-color: #d1d5db; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        /* 手機外框 */
+        .phone-mockup { width: 90vw; max-width: 380px; height: 90vh; max-height: 820px; background-color: #ffffff; border: 12px solid #1f2937; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 25px; background-color: #1f2937; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 100; }
+        .status-bar { display: flex; justify-content: space-between; padding: 12px 24px 8px; font-size: 12px; font-weight: 600; color: #111; z-index: 50; }
+        .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background-color: #111; border-radius: 100px; z-index: 100; }
+        
+        /* 場景切換 */
+        .scene { display: none; flex: 1; overflow-y: auto; flex-direction: column; padding-bottom: 20px; animation: slideUp 0.3s ease-out; }
+        .scene.active { display: flex; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Post-related styles */
-.post-container { border-bottom: 1px solid #efefef; padding-bottom: 16px; margin-bottom: 16px; }
-.post-header { display: flex; align-items: center; padding: 12px 16px; }
-.avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: bold; }
-.username { font-size: 14px; font-weight: 600; color: #262626; }
-.sponsored { font-size: 11px; font-weight: 400; color: #8e8e8e; display: block; }
-/* 醒目的黃色警告圖示 (更新為明顯黃色 `#FFEB3B` 並加入文字陰影確保對比) */
-.more-options { margin-left: auto; font-size: 20px; cursor: pointer; padding: 4px 8px; color: #FFEB3B; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: all 0.2s; }
-.more-options:hover { transform: scale(1.2); }
-.post-image { width: 100%; aspect-ratio: 4/5; display: flex; justify-content: center; align-items: center; flex-direction: column; font-size: 18px; font-weight: bold; padding: 20px; box-sizing: border-box; border-top: 1px solid #efefef; border-bottom: 1px solid #efefef; text-align: center; cursor: pointer; user-select: none; }
-.post-actions { padding: 12px 16px 8px; font-size: 24px; color: #262626; display: flex; gap: 16px; }
-.heart-icon { cursor: pointer; transition: color 0.2s; }
-.heart-icon.liked { color: #ed4956; }
-.post-caption { padding: 0 16px; font-size: 14px; line-height: 1.5; color: #262626; }
+        /* 貼文樣式 */
+        .post-container { border-bottom: 1px solid #efefef; padding-bottom: 16px; margin-bottom: 16px; }
+        .post-header { display: flex; align-items: center; padding: 12px 16px; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: bold; }
+        .username { font-size: 14px; font-weight: 600; color: #262626; }
+        .sponsored { font-size: 11px; font-weight: 400; color: #8e8e8e; display: block; }
+        
+        /* 黃色警告圖示 */
+        .more-options { margin-left: auto; font-size: 20px; cursor: pointer; padding: 4px 8px; color: #FFEB3B; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; }
+        .more-options:hover { transform: scale(1.1); }
+        
+        .post-image { width: 100%; aspect-ratio: 4/5; display: flex; justify-content: center; align-items: center; flex-direction: column; font-size: 18px; font-weight: bold; padding: 20px; box-sizing: border-box; border-top: 1px solid #efefef; border-bottom: 1px solid #efefef; text-align: center; cursor: pointer; user-select: none; }
+        .post-actions { padding: 12px 16px 8px; font-size: 24px; color: #262626; display: flex; gap: 16px; }
+        .heart-icon { cursor: pointer; transition: color 0.2s; }
+        .heart-icon.liked { color: #ed4956; }
+        .post-caption { padding: 0 16px; font-size: 14px; line-height: 1.5; color: #262626; }
 
-/* 檢舉選單樣式保留 (模仿圖片：面板結構、圓角、背景、分割線、文字描述) */
-.report-menu-container { flex: 1; overflow-y: auto; background-color: #f7f7f7; }
-.report-menu { display: flex; flex-direction: column; background-color: white; border-radius: 20px; margin: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-.report-header { padding: 16px; font-weight: bold; font-size: 16px; text-align: center; border-bottom: 1px solid #efefef; }
-.report-action { padding: 16px 16px 8px; font-size: 16px; color: #8e8e8e; font-weight: bold; }
-.report-group { display: flex; flex-direction: column; background-color: #f7f7f7; border-radius: 10px; margin: 0 16px 16px; overflow: hidden; }
-.report-btn { background: none; border: none; border-bottom: 1px solid #efefef; padding: 16px; text-align: left; display: flex; flex-direction: column; cursor: pointer; }
-.report-btn:last-child { border-bottom: none; }
-.report-btn:hover { background-color: #fafafa; }
-.report-title { font-size: 16px; font-weight: bold; color: black; margin-bottom: 4px; }
-.report-desc { font-size: 14px; color: #8e8e8e; }
-.report-cancel-btn-container { padding: 0 16px 16px; text-align: center; }
-.report-cancel-btn { background: none; border: none; padding: 16px; font-size: 16px; font-weight: bold; color: #0095f6; cursor: pointer; }
-.report-cancel-btn:hover { background-color: #fafafa; }
+        /* 一般按鈕與內容區塊 */
+        .game-controls { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #fafafa; border-top: 1px solid #efefef; margin-top: auto; }
+        .btn { background-color: #0095f6; color: white; border: none; border-radius: 8px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .btn-outline { background-color: transparent; color: #262626; border: 1px solid #dbdbdb; }
+        .btn-danger { background-color: #ed4956; }
 
-/* 按鈕樣式 */
-.game-controls { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #fafafa; border-top: 1px solid #efefef; margin-top: auto; }
-.btn { background-color: #0095f6; color: white; border: none; border-radius: 8px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
-.btn-outline { background-color: transparent; color: #262626; border: 1px solid #dbdbdb; }
-.btn-danger { background-color: #ed4956; }
-/* 解鎖滑塊樣式 (模仿圖片：軌道和方塊) */
-#unlock-slider-container { padding: 16px; margin-top: auto; }
-#unlock-slider-track { width: 100%; height: 50px; background-color: #efefef; border-radius: 25px; position: relative; overflow: hidden; cursor: pointer; }
-#unlock-slider-block { width: 50px; height: 50px; background-color: #0095f6; border-radius: 25px; position: absolute; top: 0; left: 0; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: left 0.1s linear; user-select: none; }
-#unlock-slider-text { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: #8e8e8e; font-size: 14px; font-weight: bold; user-select: none; }
-/* 知識卡樣式保留 */
-.law-card { background-color: #ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #10b981; padding: 16px; margin: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #047857; }
-.scene::-webkit-scrollbar { display: none; }
-</style>
+        /* 滑動解鎖樣式 */
+        .slider-container { padding: 20px; margin-top: auto; margin-bottom: 20px; }
+        .slider-track { width: 100%; height: 56px; background-color: #f0f0f0; border-radius: 28px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #e0e0e0; }
+        .slider-text { color: #8e8e8e; font-size: 15px; font-weight: bold; user-select: none; pointer-events: none; z-index: 1; }
+        .slider-thumb { width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #d1d5db; border-radius: 50%; position: absolute; left: 3px; display: flex; justify-content: center; align-items: center; color: #0095f6; font-size: 24px; cursor: pointer; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.15); touch-action: none; }
+
+        /* IG 風格檢舉選單 (擬真圓角版) */
+        .report-scene-bg { background-color: #f7f7f7; display: flex; flex-direction: column; height: 100%; }
+        .report-header { text-align: center; font-weight: bold; padding: 16px; border-bottom: 1px solid #dbdbdb; background: white; font-size: 16px; }
+        .report-box { background: white; border-radius: 12px; margin: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .report-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #efefef; cursor: pointer; background: white; border-left: none; border-right: none; border-top: none; width: 100%; text-align: left; font-size: 15px; font-weight: 500; color: #262626; }
+        .report-item:last-child { border-bottom: none; }
+        .report-item:hover { background-color: #fafafa; }
+        .report-item span.arrow { color: #c7c7cc; font-size: 18px; }
+        .report-cancel { background: transparent; color: #0095f6; font-weight: bold; font-size: 15px; border: none; padding: 16px; text-align: center; width: 100%; cursor: pointer; }
+
+        /* 結局卡片 */
+        .law-card { background-color: #ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #10b981; padding: 16px; margin: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #047857; }
+        .scene::-webkit-scrollbar { display: none; }
+    </style>
 </head>
 <body>
 
 <div class="phone-mockup">
-<div class="notch"></div>
-<div class="status-bar"><span id="clock">12:00</span><span>LTE 🔋</span></div>
+    <div class="notch"></div>
+    <div class="status-bar"><span id="clock">12:00</span><span>LTE 🔋</span></div>
 
-<div id="scene-start" class="scene active">
-<div style="padding: 40px 24px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center;">
-<div style="font-size: 48px; margin-bottom: 16px;">📱</div>
-<h2 style="margin: 0 0 16px 0;">指尖上的陷阱</h2>
-<p style="color: #737373; font-size: 15px; line-height: 1.6; margin-bottom: 32px;">辛苦打工了一整個月，今天終於發薪水啦！你癱在床上，決定好好滑個社群放鬆一下...</p>
-<div id="unlock-slider-container">
-<div id="unlock-slider-track">
-<div id="unlock-slider-block">➡️</div>
-<div id="unlock-slider-text">向右滑動解鎖</div>
-</div>
-</div>
-</div>
-</div>
+    <div id="scene-start" class="scene active">
+        <div style="padding: 40px 24px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📱</div>
+            <h2 style="margin: 0 0 16px 0;">指尖上的陷阱</h2>
+            <p style="color: #737373; font-size: 15px; line-height: 1.6; margin-bottom: auto;">辛苦打工了一整個月，今天終於發薪水啦！你癱在床上，決定好好滑個社群放鬆一下...</p>
+            
+            <div class="slider-container">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slider-text">向右滑動解鎖</div>
+                    <div class="slider-thumb" id="sliderThumb">▶</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="scene-ad-1" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar">XL</div>
-<div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-1')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
-<span style="font-size: 40px; margin-bottom: 10px;">💊</span>
-<span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
-<span style="font-size: 14px; font-weight: normal; margin-top: 8px;">無副作用，全線五折</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 現在填表單送價值 3000 元的深層排脂體驗！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-1')">往左滑 (沒興趣)</button>
-</div>
-</div>
+    <div id="scene-ad-1" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar">XL</div>
+                <div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-1')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
+                <span style="font-size: 40px; margin-bottom: 10px;">💊</span>
+                <span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
+                <span style="font-size: 14px; font-weight: normal; margin-top: 8px;">無副作用，全線五折</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 現在填表單送深層排脂體驗！</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-friend-1')">往左滑 (沒興趣)</button>
+        </div>
+    </div>
 
-<div id="scene-friend-1" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #a29bfe;">書生</div>
-<div class="username">study_hard_everyday</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #e3f2fd;">
-<span style="font-size: 50px;">📚</span>
-<span>期末地獄趕工中...</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>study_hard_everyday</strong> 通宵好幾天認真準備期末報告，拜託教授給我好成績啊啊啊🙏 肝快爆了...
-</div>
-</div>
-<div class="game-controls">
-<button class="btn btn-outline" onclick="goToScene('scene-ad-2')">繼續往下看</button>
-</div>
-</div>
+    <div id="scene-friend-1" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #a29bfe;">書生</div>
+                <div class="username">study_hard_everyday</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #e3f2fd;">
+                <span style="font-size: 50px;">📚</span><span>期末地獄趕工中...</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>study_hard_everyday</strong> 通宵好幾天認真準備期末報告，拜託教授給我好成績啊啊啊🙏</div>
+        </div>
+        <div class="game-controls"><button class="btn btn-outline" onclick="goToScene('scene-ad-2')">繼續往下看</button></div>
+    </div>
 
-<div id="scene-ad-2" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #ff7675;">懶</div>
-<div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-2')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
-<span style="font-size: 40px;">🛋️</span>
-<span style="color:#d63031;">不運動也能減肥？</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-2')">繼續往左滑...</button>
-</div>
-</div>
+    <div id="scene-ad-2" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #ff7675;">懶</div>
+                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-2')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
+                <span style="font-size: 40px;">🛋️</span><span style="color:#d63031;">不運動也能減肥？</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-friend-2')">繼續往左滑...</button>
+        </div>
+    </div>
 
-<div id="scene-friend-2" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #fdcb6e;">吃貨</div>
-<div class="username">foodie_midnight</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #fff3e0;">
-<span style="font-size: 50px;">🤤</span>
-<span>半夜好餓喔...</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>foodie_midnight</strong> 發個廢文，肚子怎麼突然這麼餓，還是去樓下超商買顆熱呼呼的包子吃好了🥟
-</div>
-</div>
-<div class="game-controls">
-<button class="btn btn-outline" onclick="goToScene('scene-ad-3')">繼續往下看</button>
-</div>
-</div>
+    <div id="scene-friend-2" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #fdcb6e;">吃貨</div>
+                <div class="username">foodie_midnight</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #fff3e0;">
+                <span style="font-size: 50px;">🤤</span><span>半夜好餓喔...</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>foodie_midnight</strong> 發個廢文，肚子怎麼突然這麼餓，還是去買顆熱呼呼的包子好了🥟</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-3')">繼續往下看</button>
+        </div>
+    </div>
 
-<div id="scene-ad-3" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #0984e3;">學</div>
-<div class="username">student_beauty_only <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-3')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #dfe6e9;">
-<span style="font-size: 40px;">🎓</span>
-<span style="color:#0984e3;">學生專屬 0卡分期</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>student_beauty_only</strong> 學生黨看過來！憑學生證即可享有隱藏版「月付超低價」瘦身專案，先享受後付款！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">分期好像很划算，去了解看看</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-4')">滑到煩了，繼續往左滑...</button>
-</div>
-</div>
+    <div id="scene-ad-3" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #0984e3;">學</div>
+                <div class="username">student_beauty_only <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-3')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #dfe6e9;">
+                <span style="font-size: 40px;">🎓</span><span style="color:#0984e3;">學生專屬 0卡分期</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>student_beauty_only</strong> 學生黨看過來！憑學生證即可享有「月付超低價」瘦身專案！</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">分期好像很划算，去了解看看</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-4')">滑到煩了，繼續往左滑...</button>
+        </div>
+    </div>
 
-<div id="scene-ad-4" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar">XL</div>
-<div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-4')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
-<span style="font-size: 40px; margin-bottom: 10px;">💊</span>
-<span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
-<span style="font-size: 14px; font-weight: normal; margin-top: 8px;">無副作用，全線五折</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 現在填表單送價值 3000 元的深層排脂體驗！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-5')">到底有完沒完？繼續往左滑...</button>
-</div>
-</div>
+    <div id="scene-ad-4" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar">XL</div>
+                <div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-4')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
+                <span style="font-size: 40px; margin-bottom: 10px;">💊</span><span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 填表單送排脂體驗！</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-5')">到底有完沒完？繼續往左滑...</button>
+        </div>
+    </div>
 
-<div id="scene-ad-5" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #ff7675;">懶</div>
-<div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-5')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
-<span style="font-size: 40px;">🛋️</span>
-<span style="color:#d63031;">不運動也能減肥？</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-3')">受不了了，繼續往左滑...</button>
-</div>
-</div>
+    <div id="scene-ad-5" class="scene">
+        <div class="post-container">
+            <div class="post-header">
+                <div class="avatar" style="background: #ff7675;">懶</div>
+                <div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
+                <div class="more-options" onclick="goToScene('report-menu-5')">⚠️</div>
+            </div>
+            <div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
+                <span style="font-size: 40px;">🛋️</span><span style="color:#d63031;">不運動也能減肥？</span>
+            </div>
+            <div class="post-actions"><span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span></div>
+            <div class="post-caption"><strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！</div>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-ad-3')">受不了了，繼續往左滑...</button>
+        </div>
+    </div>
 
+    <div id="report-menu-1" class="scene report-scene-bg">
+        <div class="report-header">檢舉貼文</div>
+        <div style="padding: 16px 16px 8px; font-size: 14px; font-weight: bold; color: #8e8e8e;">你為什麼要檢舉這則貼文？</div>
+        <div class="report-box">
+            <button class="report-item" onclick="goToScene('scene-fail-1')">宣稱具有醫療效能 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-win-report-1')">真人實證揭露不全且給予不實承諾 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-1')">未標示營養成分及有效期限 <span class="arrow">›</span></button>
+        </div>
+        <div class="report-box"><button class="report-item" onclick="goToScene('scene-fail-1')">我不喜歡此帳戶 <span class="arrow">›</span></button></div>
+        <button class="report-cancel" onclick="goToScene('scene-ad-1')">取消</button>
+    </div>
 
-<div id="report-menu-1" class="scene">
-<div class="report-menu-container">
-<div class="report-menu">
-<div class="report-header">檢舉貼文</div>
-<div class="report-action">不喜歡此貼文</div>
-<div class="report-group">
-<button class="report-btn" onclick="goToScene('scene-win-report-1')">
-<span class="report-title">真人實證揭露不全且給予不實承諾</span>
-<span class="report-desc">它的承諾看起來不實</span>
-</button>
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">宣稱具有醫療效能之不實廣告</span>
-<span class="report-desc">它宣稱具有醫療欺騙性</span>
-</button>
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">未標示營養成分及有效期限</span>
-<span class="report-desc">它未標示重要資訊</span>
-</button>
-</div>
-<div class="report-action">我不感興趣</div>
-<div class="report-group">
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">我不喜歡此帳戶</span>
-</button>
-</div>
-<div class="report-cancel-btn-container">
-<button class="report-cancel-btn" onclick="goToScene('scene-ad-1')">取消</button>
-</div>
-</div>
-</div>
-</div>
+    <div id="report-menu-2" class="scene report-scene-bg">
+        <div class="report-header">檢舉貼文</div>
+        <div style="padding: 16px 16px 8px; font-size: 14px; font-weight: bold; color: #8e8e8e;">你為什麼要檢舉這則貼文？</div>
+        <div class="report-box">
+            <button class="report-item" onclick="goToScene('scene-fail-2')">廣告代言人未確實使用該產品 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-2')">使用引人錯誤之從眾效應話術 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-win-report-2')">缺乏科學依據且宣稱不運動即瘦 <span class="arrow">›</span></button>
+        </div>
+        <div class="report-box"><button class="report-item" onclick="goToScene('scene-fail-2')">我不喜歡此帳戶 <span class="arrow">›</span></button></div>
+        <button class="report-cancel" onclick="goToScene('scene-ad-2')">取消</button>
+    </div>
 
-<div id="report-menu-2" class="scene">
-<div class="report-menu-container">
-<div class="report-menu">
-<div class="report-header">檢舉貼文</div>
-<div class="report-action">不喜歡此貼文</div>
-<div class="report-group">
-<button class="report-btn" onclick="goToScene('scene-win-report-2')">
-<span class="report-title">缺乏科學依據且宣稱不運動效果</span>
-<span class="report-desc">它看起來缺乏科學依據</span>
-</button>
-<button class="report-btn" onclick="goToScene('scene-fail-2')">
-<span class="report-title">廣告代言人未確實使用</span>
-<span class="report-desc">它的代言人看起來不實</span>
-</button>
-<button class="report-btn" onclick="goToScene壓縮後的程式碼已完成，將所有 Win / Fail 的對應邏輯和場景轉場完美應用到模仿圖片風格的「新檢舉選單」結構中。玩家如果點擊正確命中的選項仍然會獲得「Win」知識卡；如果點擊錯誤選項則會仍然轉場到「Fail」場景並被迫回到廣告迴圈。所有的 Win/Fail 邏輯都仍然有效。手機首頁的「方塊向右滑動」解鎖也已經實施並在方塊拖動到最右側時轉場。雙擊按讚仍然有效。實體店面仍然點擊後進入原本的「燃脂霜」情境。所有的原本功能都仍然有效。
+    <div id="report-menu-3" class="scene report-scene-bg">
+        <div class="report-header">檢舉貼文</div>
+        <div style="padding: 16px 16px 8px; font-size: 14px; font-weight: bold; color: #8e8e8e;">你為什麼要檢舉這則貼文？</div>
+        <div class="report-box">
+            <button class="report-item" onclick="goToScene('scene-win-report-3')">未清楚說明利息，隱瞞貸款陷阱 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-3')">未提供七日無條件退貨之鑑賞期 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-3')">限制未成年人簽約之同意權 <span class="arrow">›</span></button>
+        </div>
+        <div class="report-box"><button class="report-item" onclick="goToScene('scene-fail-3')">我不喜歡此帳戶 <span class="arrow">›</span></button></div>
+        <button class="report-cancel" onclick="goToScene('scene-ad-3')">取消</button>
+    </div>
 
-```html
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>指尖上的陷阱：社群生存大挑戰</title>
-<style>
-/* 壓縮後的 CSS RESET and Body style */
-body { margin: 0; padding: 0; font-family: -apple-system, sans-serif; background-color: #d1d5db; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-.phone-mockup { width: 90vw; max-width: 380px; height: 90vh; max-height: 820px; background-color: #ffffff; border: 12px solid #1f2937; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; overflow: hidden; }
-.notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 25px; background-color: #1f2937; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 100; }
-.status-bar { display: flex; justify-content: space-between; padding: 12px 24px 8px; font-size: 12px; font-weight: 600; color: #111; z-index: 50; }
-.home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background-color: #111; border-radius: 100px; z-index: 100; }
-.scene { display: none; flex: 1; overflow-y: auto; flex-direction: column; padding-bottom: 20px; animation: slideUp 0.3s ease-out; }
-.scene.active { display: flex; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    <div id="report-menu-4" class="scene report-scene-bg">
+        <div class="report-header">檢舉貼文</div>
+        <div style="padding: 16px 16px 8px; font-size: 14px; font-weight: bold; color: #8e8e8e;">你為什麼要檢舉這則貼文？</div>
+        <div class="report-box">
+            <button class="report-item" onclick="goToScene('scene-fail-4')">宣稱具有醫療效能 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-win-report-1')">真人實證揭露不全且給予不實承諾 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-4')">未標示營養成分及有效期限 <span class="arrow">›</span></button>
+        </div>
+        <div class="report-box"><button class="report-item" onclick="goToScene('scene-fail-4')">我不喜歡此帳戶 <span class="arrow">›</span></button></div>
+        <button class="report-cancel" onclick="goToScene('scene-ad-4')">取消</button>
+    </div>
 
-/* Post-related styles */
-.post-container { border-bottom: 1px solid #efefef; padding-bottom: 16px; margin-bottom: 16px; }
-.post-header { display: flex; align-items: center; padding: 12px 16px; }
-.avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: bold; }
-.username { font-size: 14px; font-weight: 600; color: #262626; }
-.sponsored { font-size: 11px; font-weight: 400; color: #8e8e8e; display: block; }
-/* 醒目的黃色警告圖示 (更新為明顯黃色並加入文字陰影確保對比) */
-.more-options { margin-left: auto; font-size: 20px; cursor: pointer; padding: 4px 8px; color: #FFEB3B; opacity: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); transition: all 0.2s; }
-.more-options:hover { transform: scale(1.2); }
-.post-image { width: 100%; aspect-ratio: 4/5; display: flex; justify-content: center; align-items: center; flex-direction: column; font-size: 18px; font-weight: bold; padding: 20px; box-sizing: border-box; border-top: 1px solid #efefef; border-bottom: 1px solid #efefef; text-align: center; cursor: pointer; user-select: none; }
-.post-actions { padding: 12px 16px 8px; font-size: 24px; color: #262626; display: flex; gap: 16px; }
-.heart-icon { cursor: pointer; transition: color 0.2s; }
-.heart-icon.liked { color: #ed4956; }
-.post-caption { padding: 0 16px; font-size: 14px; line-height: 1.5; color: #262626; }
+    <div id="report-menu-5" class="scene report-scene-bg">
+        <div class="report-header">檢舉貼文</div>
+        <div style="padding: 16px 16px 8px; font-size: 14px; font-weight: bold; color: #8e8e8e;">你為什麼要檢舉這則貼文？</div>
+        <div class="report-box">
+            <button class="report-item" onclick="goToScene('scene-fail-5')">廣告代言人未確實使用該產品 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-fail-5')">使用引人錯誤之從眾效應話術 <span class="arrow">›</span></button>
+            <button class="report-item" onclick="goToScene('scene-win-report-2')">缺乏科學依據且宣稱不運動即瘦 <span class="arrow">›</span></button>
+        </div>
+        <div class="report-box"><button class="report-item" onclick="goToScene('scene-fail-5')">我不喜歡此帳戶 <span class="arrow">›</span></button></div>
+        <button class="report-cancel" onclick="goToScene('scene-ad-5')">取消</button>
+    </div>
 
-/* 檢舉選單樣式保留 (模仿圖片：面板結構、圓角、背景、分割線、文字描述) */
-.report-menu-container { flex: 1; overflow-y: auto; background-color: #f7f7f7; }
-.report-menu { display: flex; flex-direction: column; background-color: white; border-radius: 20px; margin: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-.report-header { padding: 16px; font-weight: bold; font-size: 16px; text-align: center; border-bottom: 1px solid #efefef; }
-.report-action { padding: 16px 16px 8px; font-size: 16px; color: #8e8e8e; font-weight: bold; }
-.report-group { display: flex; flex-direction: column; background-color: #f7f7f7; border-radius: 10px; margin: 0 16px 16px; overflow: hidden; }
-.report-btn { background: none; border: none; border-bottom: 1px solid #efefef; padding: 16px; text-align: left; display: flex; flex-direction: column; cursor: pointer; }
-.report-btn:last-child { border-bottom: none; }
-.report-btn:hover { background-color: #fafafa; }
-.report-title { font-size: 16px; font-weight: bold; color: black; margin-bottom: 4px; }
-.report-desc { font-size: 14px; color: #8e8e8e; }
-.report-cancel-btn-container { padding: 0 16px 16px; text-align: center; }
-.report-cancel-btn { background: none; border: none; padding: 16px; font-size: 16px; font-weight: bold; color: #0095f6; cursor: pointer; }
-.report-cancel-btn:hover { background-color: #fafafa; }
+    <div id="scene-fail-1" class="scene" style="background:#fff;"><div style="padding:60px 24px; text-align:center;"><div style="font-size:50px;margin-bottom:16px;">❌</div><h2 style="margin:0 0 16px;">未違反社群守則</h2><p style="color:#737373;font-size:14px;">內容並未違反規定，不會移除。</p></div><div class="game-controls"><button class="btn" onclick="goToScene('scene-friend-1')">可惡！繼續滑貼文</button></div></div>
+    <div id="scene-fail-2" class="scene" style="background:#fff;"><div style="padding:60px 24px; text-align:center;"><div style="font-size:50px;margin-bottom:16px;">❌</div><h2 style="margin:0 0 16px;">未違反社群守則</h2><p style="color:#737373;font-size:14px;">內容並未違反規定，不會移除。</p></div><div class="game-controls"><button class="btn" onclick="goToScene('scene-friend-2')">可惡！繼續滑貼文</button></div></div>
+    <div id="scene-fail-3" class="scene" style="background:#fff;"><div style="padding:60px 24px; text-align:center;"><div style="font-size:50px;margin-bottom:16px;">❌</div><h2 style="margin:0 0 16px;">未違反社群守則</h2><p style="color:#737373;font-size:14px;">內容並未違反規定，不會移除。</p></div><div class="game-controls"><button class="btn" onclick="goToScene('scene-ad-4')">崩潰！演算法又推廣告</button></div></div>
+    <div id="scene-fail-4" class="scene" style="background:#fff;"><div style="padding:60px 24px; text-align:center;"><div style="font-size:50px;margin-bottom:16px;">❌</div><h2 style="margin:0 0 16px;">未違反社群守則</h2><p style="color:#737373;font-size:14px;">內容並未違反規定，不會移除。</p></div><div class="game-controls"><button class="btn" onclick="goToScene('scene-ad-5')">崩潰！演算法又推廣告</button></div></div>
+    <div id="scene-fail-5" class="scene" style="background:#fff;"><div style="padding:60px 24px; text-align:center;"><div style="font-size:50px;margin-bottom:16px;">❌</div><h2 style="margin:0 0 16px;">未違反社群守則</h2><p style="color:#737373;font-size:14px;">內容並未違反規定，不會移除。</p></div><div class="game-controls"><button class="btn" onclick="goToScene('scene-ad-3')">崩潰！演算法又推廣告</button></div></div>
 
-/* 按鈕樣式 */
-.game-controls { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #fafafa; border-top: 1px solid #efefef; margin-top: auto; }
-.btn { background-color: #0095f6; color: white; border: none; border-radius: 8px; padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
-.btn-outline { background-color: transparent; color: #262626; border: 1px solid #dbdbdb; }
-.btn-danger { background-color: #ed4956; }
-/* 解鎖滑塊樣式 (模仿圖片：軌道和方塊) */
-#unlock-slider-container { padding: 16px; margin-top: auto; }
-#unlock-slider-track { width: 100%; height: 50px; background-color: #efefef; border-radius: 25px; position: relative; overflow: hidden; cursor: pointer; }
-#unlock-slider-block { width: 50px; height: 50px; background-color: #0095f6; border-radius: 25px; position: absolute; top: 0; left: 0; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: left 0.1s linear; user-select: none; }
-#unlock-slider-text { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: #8e8e8e; font-size: 14px; font-weight: bold; user-select: none; }
-/* 知識卡樣式保留 */
-.law-card { background-color: #ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #10b981; padding: 16px; margin: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: #047857; }
-.scene::-webkit-scrollbar { display: none; }
-</style>
-</head>
-<body>
+    <div id="scene-win-report-1" class="scene">
+        <div style="padding:24px 16px;"><h2 style="color:#10b981;">🛡️ 檢舉達人！</h2><h3 style="margin-top:0;">成功識破資訊揭露陷阱</h3><p>你精準地指出了該廣告的不實之處！成功保護了其他消費者免於受騙。</p></div>
+        <div class="law-card"><strong>📖 報告知識點：</strong><br>依規定使用真人實證，必須同時交代具體產品、正常花費時間、成功與失敗機率等，此圖嚴重揭露不全。一般消費者無法在特定期間達到效果屬違法不實。</div>
+        <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
+    </div>
+    <div id="scene-win-report-2" class="scene">
+        <div style="padding:24px 16px;"><h2 style="color:#10b981;">🛡️ 檢舉達人！</h2><h3 style="margin-top:0;">成功識破誇大療效</h3><p>你一眼看穿了虛假宣傳！拯救了無數人的錢包。</p></div>
+        <div class="law-card"><strong>📖 報告知識點：</strong><br>「不用運動也能瘦」、「快速燃脂」等字眼缺乏科學依據，容易誤導消費者。公平交易委員會曾針對此類不實廣告開罰。</div>
+        <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
+    </div>
+    <div id="scene-win-report-3" class="scene">
+        <div style="padding:24px 16px;"><h2 style="color:#10b981;">🛡️ 檢舉達人！</h2><h3 style="margin-top:0;">成功識破合約陷阱</h3><p>你敏銳的法規常識，戳破了包裝在糖衣下的毒藥！</p></div>
+        <div class="law-card"><strong>📖 報告知識點：</strong><br>部分美容業者會主打「學生也能分期」，未清楚說明利息與總金額，實際上是簽署高額貸款契約。業者依法負有消費借貸契約之告知義務。</div>
+        <div class="game-controls"><button class="btn" onclick="goToScene('scene-start')">再次遊玩</button></div>
+    </div>
 
-<div class="phone-mockup">
-<div class="notch"></div>
-<div class="status-bar"><span id="clock">12:00</span><span>LTE 🔋</span></div>
+    <div id="scene-store" class="scene">
+        <div style="padding: 24px 16px;">
+            <h2 style="font-size: 20px;">🏢 實體美容中心</h2>
+            <p>你受不了廣告誘惑，來到了實體店面。美容師幫你做完一半<strong>「免費瘦身體驗」</strong>後，把你帶進一間小房間，聯合同事輪番推銷高達 10 萬元的療程。</p>
+            <p style="background: #f8f9fa; padding: 12px; border-left: 4px solid #fbbc04;">
+                店員突然當場「啪」一聲，拆封了一罐高價燃脂霜抹在你的肚子上：「先讓你試用看看，推開馬上熱熱的在燃燒脂肪喔！」
+            </p>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-contract')">覺得尷尬，示弱表示自己只是學生負擔不起</button>
+            <button class="btn btn-danger" onclick="goToScene('scene-bad-end-1')">強硬拒絕，表示只要支付剛拆封的燃脂霜就好</button>
+        </div>
+    </div>
 
-<div id="scene-start" class="scene active">
-<div style="padding: 40px 24px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center;">
-<div style="font-size: 48px; margin-bottom: 16px;">📱</div>
-<h2 style="margin: 0 0 16px 0;">指尖上的陷阱</h2>
-<p style="color: #737373; font-size: 15px; line-height: 1.6; margin-bottom: 32px;">辛苦打工了一整個月，今天終於發薪水啦！你癱在床上，決定好好滑個社群放鬆一下...</p>
-<div id="unlock-slider-container">
-<div id="unlock-slider-track">
-<div id="unlock-slider-block">➡️</div>
-<div id="unlock-slider-text">向右滑動解鎖</div>
-</div>
-</div>
-</div>
-</div>
+    <div id="scene-contract" class="scene">
+        <div style="padding: 24px 16px;">
+            <h2 style="font-size: 20px;">📝 體貼的「學生專案」？</h2>
+            <p>店員一聽你是學生，立刻換上笑臉，拿出一份合約：<br><br>「體諒你是學生，幫你申請『學生專案』，每個月只要少喝幾杯飲料，月付一點點就能輕鬆變瘦喔！」</p>
+            <p style="color: #ed4956; font-weight: bold; text-align: center;">她緊緊盯著你，把筆塞進你手裡催促簽名。</p>
+        </div>
+        <div class="game-controls">
+            <button class="btn" onclick="goToScene('scene-bad-end-2')">確認解約手續費不超過5%後，放心簽名</button>
+            <button class="btn btn-outline" onclick="goToScene('scene-good-end')">仔細看合約，發現寫著「資融公司申請書」，堅持拒簽</button>
+        </div>
+    </div>
 
-<div id="scene-ad-1" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar">XL</div>
-<div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-1')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
-<span style="font-size: 40px; margin-bottom: 10px;">💊</span>
-<span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
-<span style="font-size: 14px; font-weight: normal; margin-top: 8px;">無副作用，全線五折</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 現在填表單送價值 3000 元的深層排脂體驗！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-1')">往左滑 (沒興趣)</button>
-</div>
-</div>
+    <div id="scene-bad-end-1" class="scene">
+        <div style="padding: 24px 16px;"><h2 style="color: #ed4956;">💀 Bad Ending</h2><h3 style="margin-top: 0;">待宰的羔羊</h3><p>你以為只賠一罐燃脂霜就能脫身？店員冷笑一聲，拿出價目表，那罐不知名的燃脂霜標價高達 28,000 元！你因為當場被拆封，陷入了極大的消費爭議。</p></div>
+        <div class="law-card"><strong>⚖️ 消保法解析：</strong><br>這是不肖業者慣用的「拆封計價」陷阱。在未經消費者同意下強迫拆封商品，企圖規避退費規定。遇到此情況，應堅持不付款並保留證據向消保官申訴。</div>
+        <div class="game-controls"><button class="btn btn-outline" onclick="goToScene('scene-start')">重新挑戰</button></div>
+    </div>
 
-<div id="scene-friend-1" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #a29bfe;">書生</div>
-<div class="username">study_hard_everyday</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #e3f2fd;">
-<span style="font-size: 50px;">📚</span>
-<span>期末地獄趕工中...</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>study_hard_everyday</strong> 通宵好幾天認真準備期末報告，拜託教授給我好成績啊啊啊🙏 肝快爆了...
-</div>
-</div>
-<div class="game-controls">
-<button class="btn btn-outline" onclick="goToScene('scene-ad-2')">繼續往下看</button>
-</div>
-</div>
+    <div id="scene-bad-end-2" class="scene">
+        <div style="padding: 24px 16px;"><h2 style="color: #ed4956;">💸 Bad Ending</h2><h3 style="margin-top: 0;">假分期真貸款</h3><p>你以為確認了退費條款就安全了？兩個月後你想解約，美容院雖然同意，但你卻開始收到融資公司的催繳存證信函！</p></div>
+        <div class="law-card"><strong>⚖️ 消保法解析：</strong><br>你簽下的其實是向第三方借錢的「消費借貸契約」。依法規，業者仲介時須善盡告知義務。若發現不對勁，消費者於核准 7 日內，得以書面通知業者及貸款機構解除借貸契約。</div>
+        <div class="game-controls"><button class="btn btn-outline" onclick="goToScene('scene-start')">重新挑戰</button></div>
+    </div>
 
-<div id="scene-ad-2" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #ff7675;">懶</div>
-<div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-2')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
-<span style="font-size: 40px;">🛋️</span>
-<span style="color:#d63031;">不運動也能減肥？</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-friend-2')">繼續往左滑...</button>
-</div>
-</div>
+    <div id="scene-good-end" class="scene">
+        <div style="padding: 24px 16px;"><h2 style="color: #10b981;">🏆 Good Ending</h2><h3 style="margin-top: 0;">法規防禦大師！</h3><p>你敏銳地察覺到「資融公司」字眼，識破這根本是高利息的「信用貸款」。你嚴正拒絕簽署，並拿出手機揚言要錄影蒐證。店員見你不好惹，只好放你離開。你成功保住了辛苦賺來的薪水！</p></div>
+        <div class="law-card" style="background-color: #ecfdf5; border-color: #a7f3d0; border-left-color: #10b981; color: #047857;"><strong>🛡️ 自保建議：</strong><br>簽署任何文件前，務必確認對象是誰。許多「買課程送保養」、「學生專案」的陷阱，實質上都是誘騙消費者向融資公司辦理高額貸款。</div>
+        <div class="game-controls"><button class="btn" style="background-color: #10b981; color:white;" onclick="goToScene('scene-start')">再次遊玩</button></div>
+    </div>
 
-<div id="scene-friend-2" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #fdcb6e;">吃貨</div>
-<div class="username">foodie_midnight</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #fff3e0;">
-<span style="font-size: 50px;">🤤</span>
-<span>半夜好餓喔...</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>foodie_midnight</strong> 發個廢文，肚子怎麼突然這麼餓，還是去樓下超商買顆熱呼呼的包子吃好了🥟
-</div>
-</div>
-<div class="game-controls">
-<button class="btn btn-outline" onclick="goToScene('scene-ad-3')">繼續往下看</button>
-</div>
-</div>
-
-<div id="scene-ad-3" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #0984e3;">學</div>
-<div class="username">student_beauty_only <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-3')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #dfe6e9;">
-<span style="font-size: 40px;">🎓</span>
-<span style="color:#0984e3;">學生專屬 0卡分期</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>student_beauty_only</strong> 學生黨看過來！憑學生證即可享有隱藏版「月付超低價」瘦身專案，先享受後付款！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">分期好像很划算，去了解看看</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-4')">滑到煩了，繼續往左滑...</button>
-</div>
-</div>
-
-<div id="scene-ad-4" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar">XL</div>
-<div class="username">fromxltos_official <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-4')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
-<span style="font-size: 40px; margin-bottom: 10px;">💊</span>
-<span style="color:#ed4956;">一個半月暴瘦 8kg！</span>
-<span style="font-size: 14px; font-weight: normal; margin-top: 8px;">無副作用，全線五折</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>fromxltos_official</strong> 感謝客人回饋！這家精雕排脂太神了😍 現在填表單送價值 3000 元的深層排脂體驗！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">好心動！點擊連結預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-5')">到底有完沒完？繼續往左滑...</button>
-</div>
-</div>
-
-<div id="scene-ad-5" class="scene">
-<div class="post-container">
-<div class="post-header">
-<div class="avatar" style="background: #ff7675;">懶</div>
-<div class="username">lazy_diet_machine <span class="sponsored">贊助</span></div>
-<div class="more-options" onclick="goToScene('report-menu-5')">⚠️</div>
-</div>
-<div class="post-image" ondblclick="toggleLike(this)" style="background: #ffe0e0;">
-<span style="font-size: 40px;">🛋️</span>
-<span style="color:#d63031;">不運動也能減肥？</span>
-</div>
-<div class="post-actions">
-<span class="heart-icon" onclick="toggleLike(this)">♡</span> <span>💬</span> <span>⌲</span>
-</div>
-<div class="post-caption">
-<strong>lazy_diet_machine</strong> 每天 5 分鐘，快樂減肥不再是夢！不用流汗也能擁有馬甲線！
-</div>
-</div>
-<div class="game-controls">
-<button class="btn" onclick="goToScene('scene-store')">太神了吧，馬上預約體驗</button>
-<button class="btn btn-outline" style="border: none; color: #8e8e8e;" onclick="goToScene('scene-ad-3')">受不了了，繼續往左滑...</button>
-</div>
-</div>
-
-
-<div id="report-menu-1" class="scene">
-<div class="report-menu-container">
-<div class="report-menu">
-<div class="report-header">檢舉貼文</div>
-<div class="report-action">不喜歡此貼文</div>
-<div class="report-group">
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">宣稱具有醫療效能之不實廣告</span>
-<span class="report-desc">它宣稱具有醫療欺騙性 (原本代碼邏輯: scene-fail-1)</span>
-</button>
-<button class="report-btn" onclick="goToScene('scene-win-report-1')">
-<span class="report-title">真人實證揭露不全且給予不實承諾</span>
-<span class="report-desc">它的承諾看起來不實 (原本代碼邏輯: scene-win-report-1)</span>
-</button>
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">未標示營養成分及有效期限</span>
-<span class="report-desc">它未標示重要資訊 (原本代碼邏輯: scene-fail-1)</span>
-</button>
-</div>
-<div class="report-action">我不感興趣</div>
-<div class="report-group">
-<button class="report-btn" onclick="goToScene('scene-fail-1')">
-<span class="report-title">我不喜歡此帳戶</span>
-<span class="report-desc">(原本代碼邏輯: scene-fail-1)</span>
-</button>
-</div>
-<div class="report-cancel-btn-container">
-<button class="report-cancel-btn" onclick="goToScene('scene-ad-1')">取消</button>
-</div>
-</div>
-</div>
+    <div class="home-indicator"></div>
 </div>
 
 <script>
-/* 壓縮後的原本 JavaScript (updateClock, toggleLike, Win/Fail 按鈕邏輯準確應用) */
-function updateClock() { const now = new Date(); const clock = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0'); document.getElementById('clock').textContent = clock; }
-setInterval(updateClock, 1000); updateClock();
-function goToScene(sceneId) { document.querySelectorAll('.scene').forEach(el => el.classList.remove('active')); document.getElementById(sceneId).classList.add('active'); document.getElementById(sceneId).scrollTop = 0; }
-function toggleLike(element) { const parent = element.closest('.post-container'); const heart = parent.querySelector('.heart-icon'); if (heart.classList.contains('liked')) { heart.classList.remove('liked'); heart.textContent = '♡'; } else { heart.classList.add('liked'); heart.textContent = '♥'; } }
+    // 時間更新
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${hours}:${minutes}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-/* JavaScript for Unlock Slider (方塊向右滑動解鎖) */
-const sliderBlock = document.getElementById('unlock-slider-block');
-const sliderTrack = document.getElementById('unlock-slider-track');
-const sliderText = document.getElementById('unlock-slider-text');
-const sliderWidth = sliderTrack.offsetWidth;
-const blockWidth = sliderBlock.offsetWidth;
-const maxLeft = sliderWidth - blockWidth;
-let isDragging = false;
-let startX = 0;
-let startLeft = 0;
+    // 場景切換
+    function goToScene(sceneId) {
+        document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
+        document.getElementById(sceneId).classList.add('active');
+        document.getElementById(sceneId).scrollTop = 0;
+        
+        // 如果回到首頁，重置滑塊位置
+        if(sceneId === 'scene-start') {
+            const sliderThumb = document.getElementById('sliderThumb');
+            if(sliderThumb) sliderThumb.style.left = '3px';
+        }
+    }
 
-function startDrag(e) { isDragging = true; startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX; startLeft = sliderBlock.offsetLeft; e.preventDefault(); }
-function onDrag(e) { if (!isDragging) return; const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX; const diff = currentX - startX; let newLeft = startLeft + diff; newLeft = Math.max(0, Math.min(maxLeft, newLeft)); sliderBlock.style.left = newLeft + 'px'; }
-function endDrag() { if (!isDragging) return; isDragging = false; const currentLeft = sliderBlock.offsetLeft; if (currentLeft > maxLeft * 0.95) { goToScene('scene-ad-1'); sliderBlock.style.left = '0px'; } else { sliderBlock.style.left = '0px'; } }
+    // 點擊/雙擊愛心按讚
+    function toggleLike(element) {
+        const parent = element.closest('.post-container');
+        const heart = parent.querySelector('.heart-icon');
+        if (heart.classList.contains('liked')) {
+            heart.classList.remove('liked');
+            heart.textContent = '♡';
+        } else {
+            heart.classList.add('liked');
+            heart.textContent = '♥';
+        }
+    }
 
-sliderBlock.addEventListener('mousedown', startDrag);
-sliderBlock.addEventListener('touchstart', startDrag);
-window.addEventListener('mousemove', onDrag);
-window.addEventListener('touchmove', onDrag);
-window.addEventListener('mouseup', endDrag);
-window.addEventListener('touchend', endDrag);
+    // 處理滑動解鎖邏輯
+    const sliderTrack = document.getElementById('sliderTrack');
+    const sliderThumb = document.getElementById('sliderThumb');
+    let isDragging = false;
+    let startX = 0;
+    let initialLeft = 0;
+
+    function handleDragStart(e) {
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        initialLeft = sliderThumb.offsetLeft;
+        sliderThumb.style.transition = 'none'; // 拖曳時取消動畫讓跟隨更順暢
+    }
+
+    function handleDragMove(e) {
+        if (!isDragging) return;
+        
+        // 阻止預設滾動行為，讓手機滑動更順
+        if(e.type.includes('touch')) e.preventDefault(); 
+        
+        const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        const diffX = currentX - startX;
+        let newLeft = initialLeft + diffX;
+        
+        // 限制滑塊範圍 (3px 是左側留白，軌道寬度減去滑塊寬度減去右側留白是最大值)
+        const maxLeft = sliderTrack.offsetWidth - sliderThumb.offsetWidth - 3;
+        
+        if (newLeft < 3) newLeft = 3;
+        if (newLeft > maxLeft) newLeft = maxLeft;
+        
+        sliderThumb.style.left = newLeft + 'px';
+    }
+
+    function handleDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        sliderThumb.style.transition = 'left 0.3s ease'; // 恢復彈回動畫
+        
+        const maxLeft = sliderTrack.offsetWidth - sliderThumb.offsetWidth - 3;
+        
+        // 判斷是否滑動超過 90%
+        if (sliderThumb.offsetLeft > maxLeft * 0.9) {
+            goToScene('scene-ad-1');
+        } else {
+            // 沒滑到底，彈回原位
+            sliderThumb.style.left = '3px';
+        }
+    }
+
+    // 綁定滑鼠與觸控事件
+    sliderThumb.addEventListener('mousedown', handleDragStart);
+    sliderThumb.addEventListener('touchstart', handleDragStart, { passive: false });
+    
+    window.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('touchmove', handleDragMove, { passive: false });
+    
+    window.addEventListener('mouseup', handleDragEnd);
+    window.addEventListener('touchend', handleDragEnd);
+
 </script>
 
 </body>
